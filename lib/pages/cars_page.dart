@@ -1,9 +1,9 @@
 import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
-import 'package:hive_example/cubits/cubit/cars_cubit.dart';
+// import 'package:hive_example/cubits/cubit/cars_cubit.dart';
 import 'package:hive_example/model/car.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -173,12 +173,10 @@ class _CarsPageState extends State<CarsPage> {
                 )),
         ElevatedButton(
             onPressed: () {
-              errorMessage = (vinController.isUndefinedOrNull
-                      ? 'Enter VIN\n'
-                      : '') +
-                  (yearController.isUndefinedOrNull ? 'Enter year\n' : '') +
-                  (modelController.isUndefinedOrNull ? 'Enter model\n' : '') +
-                  (priceController.isUndefinedOrNull ? 'Enter price\n' : '');
+              errorMessage = (vinController.text.isEmpty ? 'Enter VIN\n' : '') +
+                  (yearController.text.isEmpty ? 'Enter year\n' : '') +
+                  (modelController.text.isEmpty ? 'Enter model\n' : '') +
+                  (priceController.text.isEmpty ? 'Enter price\n' : '');
               if (errorMessage == '') {
                 addCar(
                     vinController.text,

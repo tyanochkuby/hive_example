@@ -1,3 +1,5 @@
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
@@ -112,8 +114,8 @@ class _CarsPageState extends State<CarsPage> {
       ),
       floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
-          onPressed: () =>
-              showDialog(context: context, builder: (context) => CarDialog())),
+          onPressed: () => showDialog(
+              context: context, builder: (context) => CarCreateDialog())),
     );
   }
 
@@ -131,5 +133,63 @@ class _CarsPageState extends State<CarsPage> {
 
   void deleteCar(Car car) {
     car.delete();
+  }
+
+  Widget CarCreateDialog() {
+    final TextEditingController vinController = TextEditingController();
+    final TextEditingController yearController = TextEditingController();
+    final TextEditingController modelController = TextEditingController();
+    final TextEditingController priceController = TextEditingController();
+    String errorMessage = '';
+    bool isDamaged = false;
+    return Dialog(
+      child: Column(children: [
+        TextFormField(
+          controller: vinController,
+          keyboardType: TextInputType.text,
+        ),
+        TextFormField(
+          controller: yearController,
+          keyboardType: TextInputType.number,
+        ),
+        TextFormField(
+          controller: modelController,
+          keyboardType: TextInputType.text,
+        ),
+        TextFormField(
+          controller: priceController,
+          keyboardType: TextInputType.number,
+        ),
+        Checkbox(value: isDamaged, onChanged: ((value) => isDamaged = value!)),
+        errorMessage == ''
+            ? const SizedBox(
+                height: 15,
+              )
+            : SizedBox(
+                height: 15,
+                child: Text(
+                  errorMessage,
+                  style: TextTheme().bodyMedium!.copyWith(color: Colors.red),
+                )),
+        ElevatedButton(
+            onPressed: () {
+              errorMessage = (vinController.isUndefinedOrNull
+                      ? 'Enter VIN\n'
+                      : '') +
+                  (yearController.isUndefinedOrNull ? 'Enter year\n' : '') +
+                  (modelController.isUndefinedOrNull ? 'Enter model\n' : '') +
+                  (priceController.isUndefinedOrNull ? 'Enter price\n' : '');
+              if (errorMessage == '') {
+                addCar(
+                    vinController.text,
+                    int.parse(yearController.text),
+                    modelController.text,
+                    double.parse(priceController.text),
+                    isDamaged);
+              }
+            },
+            child: const Text('Submit'))
+      ]),
+    );
   }
 }

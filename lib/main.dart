@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_example/cubits/cubit/cars_cubit.dart';
 import 'package:hive_example/pages/cars_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hive_example/model/car.dart';
@@ -21,9 +23,12 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(primarySwatch: Colors.amber),
-      home: CarsPage(),
+    return BlocProvider(
+      create: (context) => CarsCubit(),
+      child: MaterialApp(
+        theme: ThemeData(primarySwatch: Colors.amber),
+        home: CarsPage(),
+      ),
     );
   }
 }

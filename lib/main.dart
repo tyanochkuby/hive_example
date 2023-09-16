@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_example/cubits/cubit/cars_cubit.dart';
 import 'package:hive_example/pages/cars_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -13,7 +11,7 @@ void main() async {
   await Hive.initFlutter();
 
   Hive.registerAdapter(CarAdapter());
-  await Hive.openBox('cars');
+  await Hive.openBox<Car>('cars');
 
   runApp(const MainApp());
 }
@@ -27,7 +25,7 @@ class MainApp extends StatelessWidget {
       create: (context) => CarsCubit(),
       child: MaterialApp(
         theme: ThemeData(primarySwatch: Colors.amber),
-        home: CarsPage(),
+        home: const CarsPage(),
       ),
     );
   }

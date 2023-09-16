@@ -1,8 +1,5 @@
-import 'dart:js_interop';
-
 import 'package:flutter/material.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
 // import 'package:hive_example/cubits/cubit/cars_cubit.dart';
 import 'package:hive_example/model/car.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -41,44 +38,104 @@ class _CarsPageState extends State<CarsPage> {
               builder: (context, box, _) {
                 final cars = box.values.toList().cast<Car>();
 
-                return ListView.builder(itemBuilder: (context, index) {
-                  Row(
-                    children: [
+                return Table(
+                  border: TableBorder.all(color: Colors.black),
+                  children: List<TableRow>.generate(cars.length, (index) {
+                    final car = cars.elementAt(index);
+                    return TableRow(children: [
+                      //     Padding(
+                      //     padding: EdgeInsets.all(5.0),
+                      //     child: Text(car.vin, textAlign: TextAlign.center),
+                      // ),
+                      // Padding(
+                      //     padding: EdgeInsets.all(5.0),
+                      //     child: Text(car.year.toString(), textAlign: TextAlign.center),
+                      // ),
+                      // Padding(
+                      //     padding: EdgeInsets.all(5.0),
+                      //     child: Text(car.model, textAlign: TextAlign.center),
+                      // ),
+                      // Padding(
+                      //     padding: EdgeInsets.all(5.0),
+                      //     child: Text('${car.price}\$', textAlign: TextAlign.center),
+                      // ),
+                      // if(car.isDamaged)
+                      //   const Padding(padding: EdgeInsets.all(5.0),
+                      //   child: Text('Damaged', textAlign: TextAlign.center,),
+                      //   )
                       const Spacer(),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.3,
-                        child: Text(cars.elementAt(index).vin),
+                        child: Text(car.vin),
                       ),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.1,
-                        child: Text(cars.elementAt(index).year.toString()),
+                        child: Text(car.year.toString()),
                       ),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.3,
-                        child: Text(cars.elementAt(index).model),
+                        child: Text(car.model),
                       ),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.1,
-                        child: Text(cars.elementAt(index).price.toString()),
+                        child: Text(car.price.toString()),
                       ),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.1,
-                        child: Text(
-                            cars.elementAt(index).isDamaged ? 'yes' : 'no'),
+                        child: Text(car.isDamaged ? 'yes' : 'no'),
                       ),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.05,
                         child: GestureDetector(
                           onTap: () {
-                            deleteCar(cars.elementAt(index));
+                            deleteCar(car);
                           },
-                          child: Icon(Icons.delete),
+                          child: const Icon(Icons.delete),
                         ),
                       ),
                       const Spacer(),
-                    ],
-                  );
-                });
+                    ]);
+                  }),
+                );
+
+                // return ListView.builder(itemBuilder: (context, index) {
+                //   return Row(
+                //     children: [
+                //       const Spacer(),
+                //       SizedBox(
+                //         width: MediaQuery.of(context).size.width * 0.3,
+                //         child: Text(cars.elementAt(index).vin),
+                //       ),
+                //       SizedBox(
+                //         width: MediaQuery.of(context).size.width * 0.1,
+                //         child: Text(cars.elementAt(index).year.toString()),
+                //       ),
+                //       SizedBox(
+                //         width: MediaQuery.of(context).size.width * 0.3,
+                //         child: Text(cars.elementAt(index).model),
+                //       ),
+                //       SizedBox(
+                //         width: MediaQuery.of(context).size.width * 0.1,
+                //         child: Text(cars.elementAt(index).price.toString()),
+                //       ),
+                //       SizedBox(
+                //         width: MediaQuery.of(context).size.width * 0.1,
+                //         child: Text(
+                //             cars.elementAt(index).isDamaged ? 'yes' : 'no'),
+                //       ),
+                //       SizedBox(
+                //         width: MediaQuery.of(context).size.width * 0.05,
+                //         child: GestureDetector(
+                //           onTap: () {
+                //             deleteCar(cars.elementAt(index));
+                //           },
+                //           child: const Icon(Icons.delete),
+                //         ),
+                //       ),
+                //       const Spacer(),
+                //     ],
+                //   );
+                // });
               }),
           // BlocBuilder<CarsCubit, CarsState>(builder: (context, state) {
           //   return ListView.builder(itemBuilder: (context, index) {
@@ -113,7 +170,7 @@ class _CarsPageState extends State<CarsPage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
+          child: const Icon(Icons.add),
           onPressed: () => showDialog(
               context: context, builder: (context) => CarCreateDialog())),
     );
@@ -135,6 +192,7 @@ class _CarsPageState extends State<CarsPage> {
     car.delete();
   }
 
+  // ignore: non_constant_identifier_names
   Widget CarCreateDialog() {
     final TextEditingController vinController = TextEditingController();
     final TextEditingController yearController = TextEditingController();
@@ -169,7 +227,8 @@ class _CarsPageState extends State<CarsPage> {
                 height: 15,
                 child: Text(
                   errorMessage,
-                  style: TextTheme().bodyMedium!.copyWith(color: Colors.red),
+                  style:
+                      const TextTheme().bodyMedium!.copyWith(color: Colors.red),
                 )),
         ElevatedButton(
             onPressed: () {

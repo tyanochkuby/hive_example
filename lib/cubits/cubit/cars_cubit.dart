@@ -1,10 +1,7 @@
-import 'dart:math';
-
+// ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
 import 'package:hive_example/boxes.dart';
 import 'package:hive_example/model/car.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:meta/meta.dart';
 
 part 'cars_state.dart';
 

@@ -176,30 +176,29 @@ class _CarsPageState extends State<CarsPage> {
     );
   }
 
-  void addCar(
-      String vin, int year, String model, double price, bool isDamaged) {
-    final car = Car()
-      ..vin = vin
-      ..year = year
-      ..model = model
-      ..price = price
-      ..isDamaged = isDamaged;
-    final box = Boxes.getCars();
-    box.add(car);
-  }
-
-  void deleteCar(Car car) {
-    car.delete();
-  }
-
   // ignore: non_constant_identifier_names
-  Widget CarCreateDialog() {
-    final TextEditingController vinController = TextEditingController();
-    final TextEditingController yearController = TextEditingController();
-    final TextEditingController modelController = TextEditingController();
-    final TextEditingController priceController = TextEditingController();
-    String errorMessage = '';
-    bool isDamaged = false;
+}
+
+class CarCreateDialog extends StatefulWidget {
+  @override
+  State<CarCreateDialog> createState() => _CarCreateDialogState();
+}
+
+class _CarCreateDialogState extends State<CarCreateDialog> {
+  final TextEditingController vinController = TextEditingController();
+
+  final TextEditingController yearController = TextEditingController();
+
+  final TextEditingController modelController = TextEditingController();
+
+  final TextEditingController priceController = TextEditingController();
+
+  String errorMessage = '';
+
+  bool isDamaged = false;
+
+  @override
+  Widget build(BuildContext context) {
     return Dialog(
       child: Column(children: [
         TextFormField(
@@ -218,7 +217,11 @@ class _CarsPageState extends State<CarsPage> {
           controller: priceController,
           keyboardType: TextInputType.number,
         ),
-        Checkbox(value: isDamaged, onChanged: ((value) => isDamaged = value!)),
+        Checkbox(
+            value: isDamaged,
+            onChanged: ((newValue) => setState(() {
+                  isDamaged = newValue!;
+                }))),
         errorMessage == ''
             ? const SizedBox(
                 height: 15,
@@ -249,4 +252,19 @@ class _CarsPageState extends State<CarsPage> {
       ]),
     );
   }
+}
+
+void addCar(String vin, int year, String model, double price, bool isDamaged) {
+  final car = Car()
+    ..vin = vin
+    ..year = year
+    ..model = model
+    ..price = price
+    ..isDamaged = isDamaged;
+  final box = Boxes.getCars();
+  box.add(car);
+}
+
+void deleteCar(Car car) {
+  car.delete();
 }

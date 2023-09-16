@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:hive_example/cubits/cubit/cars_cubit.dart';
 import 'package:hive_example/model/car.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -97,76 +95,7 @@ class _CarsPageState extends State<CarsPage> {
                     ]);
                   }),
                 );
-
-                // return ListView.builder(itemBuilder: (context, index) {
-                //   return Row(
-                //     children: [
-                //       const Spacer(),
-                //       SizedBox(
-                //         width: MediaQuery.of(context).size.width * 0.3,
-                //         child: Text(cars.elementAt(index).vin),
-                //       ),
-                //       SizedBox(
-                //         width: MediaQuery.of(context).size.width * 0.1,
-                //         child: Text(cars.elementAt(index).year.toString()),
-                //       ),
-                //       SizedBox(
-                //         width: MediaQuery.of(context).size.width * 0.3,
-                //         child: Text(cars.elementAt(index).model),
-                //       ),
-                //       SizedBox(
-                //         width: MediaQuery.of(context).size.width * 0.1,
-                //         child: Text(cars.elementAt(index).price.toString()),
-                //       ),
-                //       SizedBox(
-                //         width: MediaQuery.of(context).size.width * 0.1,
-                //         child: Text(
-                //             cars.elementAt(index).isDamaged ? 'yes' : 'no'),
-                //       ),
-                //       SizedBox(
-                //         width: MediaQuery.of(context).size.width * 0.05,
-                //         child: GestureDetector(
-                //           onTap: () {
-                //             deleteCar(cars.elementAt(index));
-                //           },
-                //           child: const Icon(Icons.delete),
-                //         ),
-                //       ),
-                //       const Spacer(),
-                //     ],
-                //   );
-                // });
               }),
-          // BlocBuilder<CarsCubit, CarsState>(builder: (context, state) {
-          //   return ListView.builder(itemBuilder: (context, index) {
-          //     Row(
-          //       children: [
-          //         const Spacer(),
-          //         SizedBox(
-          //           width: MediaQuery.of(context).size.width * 0.3,
-          //           child: Text(state.cars.elementAt(index).vin),
-          //         ),
-          //         SizedBox(
-          //           width: MediaQuery.of(context).size.width * 0.1,
-          //           child: Text(state.cars.elementAt(index).year.toString()),
-          //         ),
-          //         SizedBox(
-          //           width: MediaQuery.of(context).size.width * 0.3,
-          //           child: Text(state.cars.elementAt(index).model),
-          //         ),
-          //         SizedBox(
-          //           width: MediaQuery.of(context).size.width * 0.1,
-          //           child: Text(state.cars.elementAt(index).price.toString()),
-          //         ),
-          //         SizedBox(
-          //           width: MediaQuery.of(context).size.width * 0.1,
-          //           child: Text(state.cars.elementAt(index).isDamaged ? 'yes' : 'no'),
-          //         ),
-          //         const Spacer(),
-          //       ],
-          //     );
-          //   });
-          // }),
         ],
       ),
       floatingActionButton: FloatingActionButton(

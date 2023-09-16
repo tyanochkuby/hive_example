@@ -200,56 +200,70 @@ class _CarCreateDialogState extends State<CarCreateDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      child: Column(children: [
-        TextFormField(
-          controller: vinController,
-          keyboardType: TextInputType.text,
-        ),
-        TextFormField(
-          controller: yearController,
-          keyboardType: TextInputType.number,
-        ),
-        TextFormField(
-          controller: modelController,
-          keyboardType: TextInputType.text,
-        ),
-        TextFormField(
-          controller: priceController,
-          keyboardType: TextInputType.number,
-        ),
-        Checkbox(
-            value: isDamaged,
-            onChanged: ((newValue) => setState(() {
-                  isDamaged = newValue!;
-                }))),
-        errorMessage == ''
-            ? const SizedBox(
-                height: 15,
-              )
-            : SizedBox(
-                height: 15,
-                child: Text(
-                  errorMessage,
-                  style:
-                      const TextTheme().bodyMedium!.copyWith(color: Colors.red),
-                )),
-        ElevatedButton(
-            onPressed: () {
-              errorMessage = (vinController.text.isEmpty ? 'Enter VIN\n' : '') +
-                  (yearController.text.isEmpty ? 'Enter year\n' : '') +
-                  (modelController.text.isEmpty ? 'Enter model\n' : '') +
-                  (priceController.text.isEmpty ? 'Enter price\n' : '');
-              if (errorMessage == '') {
-                addCar(
-                    vinController.text,
-                    int.parse(yearController.text),
-                    modelController.text,
-                    double.parse(priceController.text),
-                    isDamaged);
-              }
-            },
-            child: const Text('Submit'))
-      ]),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30),
+        child: Column(children: [
+          TextFormField(
+            decoration: const InputDecoration(hintText: 'vin'),
+            controller: vinController,
+            keyboardType: TextInputType.text,
+          ),
+          TextFormField(
+            decoration: const InputDecoration(hintText: 'year'),
+            controller: yearController,
+            keyboardType: TextInputType.number,
+          ),
+          TextFormField(
+            decoration: const InputDecoration(hintText: 'model'),
+            controller: modelController,
+            keyboardType: TextInputType.text,
+          ),
+          TextFormField(
+            decoration: const InputDecoration(hintText: 'price'),
+            controller: priceController,
+            keyboardType: TextInputType.number,
+          ),
+          Row(
+            children: [
+              const Text('Is car damaged?'),
+              Checkbox(
+                  value: isDamaged,
+                  onChanged: ((newValue) => setState(() {
+                        isDamaged = newValue!;
+                      }))),
+            ],
+          ),
+          errorMessage == ''
+              ? const SizedBox(
+                  height: 15,
+                )
+              : SizedBox(
+                  height: 15,
+                  child: Text(
+                    errorMessage,
+                    style: const TextTheme()
+                        .bodyMedium!
+                        .copyWith(color: Colors.red),
+                  )),
+          ElevatedButton(
+              onPressed: () {
+                errorMessage =
+                    (vinController.text.isEmpty ? 'Enter VIN\n' : '') +
+                        (yearController.text.isEmpty ? 'Enter year\n' : '') +
+                        (modelController.text.isEmpty ? 'Enter model\n' : '') +
+                        (priceController.text.isEmpty ? 'Enter price\n' : '');
+                if (errorMessage == '') {
+                  addCar(
+                      vinController.text,
+                      int.parse(yearController.text),
+                      modelController.text,
+                      double.parse(priceController.text),
+                      isDamaged);
+                }
+              },
+              child: const Text('Submit'))
+        ]),
+      ),
     );
   }
 }

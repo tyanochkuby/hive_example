@@ -19,6 +19,18 @@ class _CarsPageState extends State<CarsPage> {
     super.dispose();
   }
 
+  final TextEditingController vinController = TextEditingController();
+
+  final TextEditingController yearController = TextEditingController();
+
+  final TextEditingController modelController = TextEditingController();
+
+  final TextEditingController priceController = TextEditingController();
+
+  String errorMessage = '';
+
+  bool isDamaged = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,26 +53,6 @@ class _CarsPageState extends State<CarsPage> {
                   children: List<TableRow>.generate(cars.length, (index) {
                     final car = cars.elementAt(index);
                     return TableRow(children: [
-                      //     Padding(
-                      //     padding: EdgeInsets.all(5.0),
-                      //     child: Text(car.vin, textAlign: TextAlign.center),
-                      // ),
-                      // Padding(
-                      //     padding: EdgeInsets.all(5.0),
-                      //     child: Text(car.year.toString(), textAlign: TextAlign.center),
-                      // ),
-                      // Padding(
-                      //     padding: EdgeInsets.all(5.0),
-                      //     child: Text(car.model, textAlign: TextAlign.center),
-                      // ),
-                      // Padding(
-                      //     padding: EdgeInsets.all(5.0),
-                      //     child: Text('${car.price}\$', textAlign: TextAlign.center),
-                      // ),
-                      // if(car.isDamaged)
-                      //   const Padding(padding: EdgeInsets.all(5.0),
-                      //   child: Text('Damaged', textAlign: TextAlign.center,),
-                      //   )
                       const Spacer(),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.3,
@@ -100,101 +92,93 @@ class _CarsPageState extends State<CarsPage> {
       ),
       floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.add),
-          onPressed: () => showDialog(
-              context: context, builder: (context) => CarCreateDialog())),
+          onPressed: () => showModalBottomSheet(
+              shape: const RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.vertical(top: Radius.circular(15))),
+              context: context,
+              builder: (context) {
+                return StatefulBuilder(builder: (context, setModalState) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 50, vertical: 15),
+                    child: Column(children: [
+                      TextField(
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(), hintText: 'vin'),
+                        controller: vinController,
+                        keyboardType: TextInputType.text,
+                      ),
+                      TextField(
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(), hintText: 'year'),
+                        controller: yearController,
+                        keyboardType: TextInputType.number,
+                      ),
+                      TextField(
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(), hintText: 'model'),
+                        controller: modelController,
+                        keyboardType: TextInputType.text,
+                      ),
+                      TextField(
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(), hintText: 'price'),
+                        controller: priceController,
+                        keyboardType: TextInputType.number,
+                      ),
+                      Row(
+                        children: [
+                          const Text('Is car damaged?'),
+                          Checkbox(
+                              value: isDamaged,
+                              onChanged: ((newValue) => setModalState(() {
+                                    isDamaged = newValue!;
+                                  }))),
+                        ],
+                      ),
+                      Text(
+                        errorMessage,
+                        style: const TextStyle(color: Colors.red),
+                      ),
+                      const Spacer(),
+                      ElevatedButton(
+                          onPressed: () {
+                            setModalState(() {
+                              errorMessage = (vinController.text.isEmpty
+                                      ? 'Enter VIN '
+                                      : '') +
+                                  (yearController.text.isEmpty
+                                      ? 'Enter year '
+                                      : '') +
+                                  (modelController.text.isEmpty
+                                      ? 'Enter model '
+                                      : '') +
+                                  (priceController.text.isEmpty
+                                      ? 'Enter price '
+                                      : '');
+                              print(errorMessage);
+                            });
+
+                            if (errorMessage == '') {
+                              addCar(
+                                  vinController.text,
+                                  int.parse(yearController.text),
+                                  modelController.text,
+                                  double.parse(priceController.text),
+                                  isDamaged);
+                              Navigator.pop(context);
+                            }
+                          },
+                          child: const Text('Submit'))
+                    ]),
+                  );
+                });
+              })),
     );
   }
 
   // ignore: non_constant_identifier_names
-}
-
-class CarCreateDialog extends StatefulWidget {
-  @override
-  State<CarCreateDialog> createState() => _CarCreateDialogState();
-}
-
-class _CarCreateDialogState extends State<CarCreateDialog> {
-  final TextEditingController vinController = TextEditingController();
-
-  final TextEditingController yearController = TextEditingController();
-
-  final TextEditingController modelController = TextEditingController();
-
-  final TextEditingController priceController = TextEditingController();
-
-  String errorMessage = '';
-
-  bool isDamaged = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Dialog(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30),
-        child: Column(children: [
-          TextFormField(
-            decoration: const InputDecoration(hintText: 'vin'),
-            controller: vinController,
-            keyboardType: TextInputType.text,
-          ),
-          TextFormField(
-            decoration: const InputDecoration(hintText: 'year'),
-            controller: yearController,
-            keyboardType: TextInputType.number,
-          ),
-          TextFormField(
-            decoration: const InputDecoration(hintText: 'model'),
-            controller: modelController,
-            keyboardType: TextInputType.text,
-          ),
-          TextFormField(
-            decoration: const InputDecoration(hintText: 'price'),
-            controller: priceController,
-            keyboardType: TextInputType.number,
-          ),
-          Row(
-            children: [
-              const Text('Is car damaged?'),
-              Checkbox(
-                  value: isDamaged,
-                  onChanged: ((newValue) => setState(() {
-                        isDamaged = newValue!;
-                      }))),
-            ],
-          ),
-          errorMessage == ''
-              ? const SizedBox(
-                  height: 15,
-                )
-              : SizedBox(
-                  height: 15,
-                  child: Text(
-                    errorMessage,
-                    style: const TextTheme()
-                        .bodyMedium!
-                        .copyWith(color: Colors.red),
-                  )),
-          ElevatedButton(
-              onPressed: () {
-                errorMessage =
-                    (vinController.text.isEmpty ? 'Enter VIN\n' : '') +
-                        (yearController.text.isEmpty ? 'Enter year\n' : '') +
-                        (modelController.text.isEmpty ? 'Enter model\n' : '') +
-                        (priceController.text.isEmpty ? 'Enter price\n' : '');
-                if (errorMessage == '') {
-                  addCar(
-                      vinController.text,
-                      int.parse(yearController.text),
-                      modelController.text,
-                      double.parse(priceController.text),
-                      isDamaged);
-                }
-              },
-              child: const Text('Submit'))
-        ]),
-      ),
-    );
-  }
 }
 
 void addCar(String vin, int year, String model, double price, bool isDamaged) {
